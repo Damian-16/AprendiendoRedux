@@ -37,12 +37,22 @@ export const obtenerPokemonsAccion = () => async (dispatch,getState)=>{
     
     
     //    getState()
+    if(localStorage.getItem('offset=0')){
+        console.log('datos guardados')
+        dispatch({
+            type:OBTENER_POKEMONS_EXITO,
+            payload:JSON.parse(localStorage.getItem('offset=0'))
+        })
+        return
+    }
     try {
+        console.log('datos que vienen desde la api')// esto se presentara la primera vez q se llama ala api que quedara guardado en el localstorage
        const res = await axios.get(`https://pokeapi.co/api/v2/pokemon?offset=0&limit=20`)
        dispatch({
            type:OBTENER_POKEMONS_EXITO,
            payload:res.data  //esto lo envia 
        })
+       localStorage.setItem('offset=0',JSON.stringify(res.data))//informaciond e key y value a guardar en el localstorage
     }
     catch (err){
         console.log(err)
