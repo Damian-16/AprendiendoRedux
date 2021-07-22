@@ -66,6 +66,14 @@ export const siguientePokemonAccion = () => async (dispatch,getState) => {
     // const offset = getState().pokemons.offset
     // const siguiente = offset + 20
     const next = getState().pokemons.next
+    if(localStorage.getItem(next)){
+        console.log('datos next guardados')
+        dispatch({
+            type:OBTENER_POKEMONS_EXITO,
+            payload:JSON.parse(localStorage.getItem(next)) 
+        })
+        return
+    }
 try {
                                                       
     const res = await axios.get(next)
@@ -74,6 +82,7 @@ try {
         payload:res.data 
          
     })
+    localStorage.setItem(next,JSON.stringify(res.data))
 } catch (error) {
     console.log(error)
 }
@@ -81,6 +90,14 @@ try {
 
 export const anteriorPokemonAccion =()=>async(dispatch,getState)=>{
     const previous = getState().pokemons.previous
+    if(localStorage.getItem(previous)){
+        console.log('datos anteriores guardados')
+        dispatch({
+            type:OBTENER_POKEMONS_EXITO,
+            payload:JSON.parse(localStorage.getItem(previous)) 
+        })
+        return
+    }
     
     try {
                                                       
