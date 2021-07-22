@@ -27,7 +27,7 @@ export const obtenerPokemonsAccion = () => async (dispatch,getState)=>{
        const res = await axios.get('https://pokeapi.co/api/v2/pokemon?offset=0&limit=20')
        dispatch({
            type:OBTENER_POKEMONS_EXITO,
-           payload:res.data.result  //esto lo envia 
+           payload:res.data.results  //esto lo envia 
        })
     }
     catch (err){
