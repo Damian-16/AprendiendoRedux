@@ -8,7 +8,10 @@ function App() {
 
   return (
     <Provider store={store}>
+      <div className="container mt-3">
       <Pokemons/>   
+      
+ </div>
     </Provider>
   );
 }

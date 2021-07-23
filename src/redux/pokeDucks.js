@@ -12,6 +12,7 @@ const dataInicial ={
 //types 
 const OBTENER_POKEMONS_EXITO = 'OBTENER_POKEMONS_EXITO'
 const SIGUIENTE_POKEMONS_EXITO = 'SIGUIENTE_POKEMONS_EXITO'
+const POKE_INFO_EXITO ='POKE_INFO_EXITO'
 
 
 //reducers
@@ -21,6 +22,8 @@ case OBTENER_POKEMONS_EXITO:
     return {...state,...action.payload} //se queda con el estado inicial y se le suma lo que le llega del payload
 case SIGUIENTE_POKEMONS_EXITO:
     return {...state,...action.payload}
+case POKE_INFO_EXITO:
+    return {...state,unPokemon:action.payload}
 default:
     return state
 }
@@ -28,6 +31,47 @@ default:
 
 
 //actions
+
+export const unPokeDetalleAccion = (url = 'https://pokeapi.co/api/v2/pokemon/1/') => async (dispatch,getState)=>{
+  
+ if(localStorage.getItem(url)){
+     dispatch({
+         type:POKE_INFO_EXITO,
+         payload:JSON.parse(localStorage.getItem(url))//leemos y transformamos el JSON.stringify
+     })
+     console.log("desde localStoragge")
+     return
+     
+ }
+    
+    try{
+        console.log("detalle desde api")
+      const res = await axios.get(url)
+    console.log(res.data)  
+    dispatch({
+        type:POKE_INFO_EXITO,
+        payload:{
+            nombre:res.data.name,
+            ancho:res.data.weight,
+            alto:res.data.height,
+            foto:res.data.sprites.front_default
+        }
+    }) 
+    localStorage.setItem(url,JSON.stringify({
+        nombre:res.data.name,
+        ancho:res.data.weight,
+        alto:res.data.height,
+        foto:res.data.sprites.front_default
+    }))
+}
+    catch(err){
+        console.log(err)
+    }
+}
+
+
+
+
                                   //esta funcion arrow retorna otra funcion, la primera recibe parametros que necesitamos enviar a obtenerPokemonAccion, y la siguiente necesita un dispatch(activa el reducer)y getState(obtiene la data inicial)
 export const obtenerPokemonsAccion = () => async (dispatch,getState)=>{
 
