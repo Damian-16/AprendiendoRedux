@@ -1,9 +1,20 @@
 import React from 'react'
-import { useDispatch } from 'react-redux';
-import {ingresoUsuarioAccion} from '../redux/usuarioDucks'
+import { useDispatch ,useSelector} from 'react-redux';
+import {ingresoUsuarioAccion} from '../redux/usuarioDucks';
+import {withRouter} from 'react-router-dom'
 
- const Login = () => {
+
+ const Login = (props) => {
      const dispatch = useDispatch();
+
+     const loading = useSelector(store => store.usuario.loading)
+     const activo = useSelector(store => store.usuario.activo)
+     console.log(loading)
+     React.useEffect(() =>{
+       if(activo){
+           props.history.push('/')
+       }
+     },[activo])
 
 
     return (
@@ -12,8 +23,9 @@ import {ingresoUsuarioAccion} from '../redux/usuarioDucks'
             <hr/>
           <button
            className="btn btn-dark"
-           onClick={()=> dispatch(ingresoUsuarioAccion())}>Acceder</button>  
+           onClick={()=> dispatch(ingresoUsuarioAccion())}
+           disabled={loading}>Acceder</button>  
         </div>
     )
 }
-export default Login;
+export default withRouter(Login);
