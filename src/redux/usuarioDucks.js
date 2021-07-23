@@ -56,4 +56,14 @@ dispatch({
         })
     }
 
+    
+
+}
+export const leerUsuarioActivoAccion = () =>  (dispatch)=>{
+    if(localStorage.getItem('usuario')){
+        dispatch({
+            type:USUARIO_EXITO,
+            payload:JSON.parse(localStorage.getItem('usuario'))
+        })
+  }
 }
