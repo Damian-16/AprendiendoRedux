@@ -23,7 +23,7 @@ case OBTENER_POKEMONS_EXITO:
 case SIGUIENTE_POKEMONS_EXITO:
     return {...state,...action.payload}
 case POKE_INFO_EXITO:
-    return {...state,unPokemon:action.payload}
+    return {...state,unPokemon:action.payload}//toda la data del ancho alto img etc se guarda en unPokemon
 default:
     return state
 }
