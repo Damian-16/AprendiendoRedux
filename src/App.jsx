@@ -13,6 +13,7 @@ import {
 import Login from './components/Login';
 import  Navbar  from './components/Navbar';
 import {auth} from "./firebase";
+import Perfil from "./components/Perfil"
 
 
 function App() {
@@ -50,6 +51,7 @@ const RutaPrivada =({component,path,...rest})=>{
    <Navbar/>     
     <Switch>
       <RutaPrivada component={Pokemons} path="/" exact/>
+      <RutaPrivada component={Perfil} path="/perfil" exact/>
       <Route component={Login} path="/login" exact/>
       </Switch>  
       

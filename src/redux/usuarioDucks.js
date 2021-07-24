@@ -1,4 +1,4 @@
-import {auth,firebase} from '../firebase'
+import {auth,firebase,db} from '../firebase'
 
 
 
@@ -40,18 +40,47 @@ dispatch({
     try {
         const provider = new firebase.auth.GoogleAuthProvider();
         const res = await auth.signInWithPopup(provider)
-        console.log(res)
-        dispatch({
-            type:USUARIO_EXITO,
-            payload:{
-                uid:res.user.uid,
-                email:res.user.email
-            }
-        })
-        localStorage.setItem("usuario",JSON.stringify({
+        // console.log(res.user)
+        const usuario = {
             uid:res.user.uid,
-            email:res.user.email
-        }))
+            email:res.user.email,
+            displayName:res.user.displayName,
+            photoURL:res.user.photoURL
+        }
+        const usuarioDB = await db.collection('usuarios').doc(usuario.email).get()// de esta manera preguntamos si en la base de datos esta el usuario en el mail solicitado
+        console.log(usuarioDB)
+        if(usuarioDB.exists){
+            //cuando existe el usuario en firestore
+            dispatch({
+                type:USUARIO_EXITO,
+                payload:usuarioDB.data()// ese usuarioDB es el que viene de nuestra conexion solo que data()accede al objeto usuario
+            })
+            localStorage.setItem('usuario',JSON.stringify(usuarioDB.data()))
+
+        }else{
+            //no existe el usuario en firestore, por eso lo guardamos
+            await db.collection('usuarios').doc(usuario.email).set(usuario) 
+            dispatch({
+                type:USUARIO_EXITO,
+                payload:usuario //estamos enviando el usuario
+            })
+            localStorage.setItem('usuario',JSON.stringify(usuario))
+        }
+
+
+        // dispatch({
+        //     type:USUARIO_EXITO,
+        //     payload:{
+        //         uid:res.user.uid,
+        //         email:res.user.email
+        //     }
+        // })
+        // localStorage.setItem("usuario",JSON.stringify({
+        //     uid:res.user.uid,
+        //     email:res.user.email
+        // }))                             hecha la validacion mas arriba esto ya no se usa
+
+
     } catch (error) {
         console.error(error)
         dispatch({
