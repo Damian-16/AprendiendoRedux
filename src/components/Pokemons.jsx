@@ -22,7 +22,7 @@ const Pokemons = () => {
      },[dispatch])//esto es para que no se presione el getPokemon
 
     return (
-        <div className="row">
+        <div className="row mt-5">
             <div className="col-md-6">
 
           
@@ -43,7 +43,7 @@ const Pokemons = () => {
             {previous &&
             <button  className="btn btn-dark" onClick={()=>dispatch(anteriorPokemonAccion())}>Anterior</button>}
      </div>
-     <ul className="list-group mt-3"> 
+     <ul className="list-group mt-4"> 
           {
               pokemones.map(item =>(
                   <li key={item.name} className="list-group-item text-uppercase" >
@@ -56,7 +56,7 @@ const Pokemons = () => {
        } 
        </ul> 
        </div>
-       <div className="col-md-6">
+       <div className="col-md-4">
            <h3>Detalle de pokemon</h3>
        <Detalle/>
        </div>
