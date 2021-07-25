@@ -14,7 +14,7 @@ import {withRouter} from 'react-router-dom'
        if(activo){
            props.history.push('/')
        }
-     },[activo])
+     },[activo,props.history])
 
 
     return (
