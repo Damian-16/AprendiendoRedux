@@ -1,4 +1,4 @@
-import {auth,firebase,db} from '../firebase'
+import {auth,firebase,db, storage} from '../firebase'
 
 
 
@@ -133,4 +133,33 @@ export const actualizarUsuarioAccion =(nombreActualizado) =>async(dispatch,getSt
     } catch (error) {
         console.error(error)
     }
+}
+
+export const editarFotoAccion =(imagenEditada)=>async(dispatch,getState)=>{
+
+    dispatch({
+        type:LOADING
+    })
+    const {user} = getState().usuario
+    try {         //archivo referenciado //guardado en esta carpeta  // guardado con este nombre de foto
+         const imagenRef = await storage.ref().child(user.email).child('foto perfil') 
+        await imagenRef.put(imagenEditada)// ese archivo lo guardamos con put
+        const imagenURL = await imagenRef.getDownloadURL()// y aqui obtenemos su url
+
+        await db.collection('usuarios').doc(user.email).update({
+            photoURL:imagenURL
+        })
+        const usuario ={
+            ...user,
+            photoURL:imagenURL // lo que estamos obteniendo del storage
+        }
+        dispatch({
+            type:USUARIO_EXITO,
+            payload:usuario
+        })
+        localStorage.setItem('usuario',JSON.stringify(usuario))
+    } catch (error) {
+        console.error(error)
+    }
+
 }
