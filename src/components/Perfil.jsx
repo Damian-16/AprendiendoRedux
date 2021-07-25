@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import {useSelector,useDispatch} from 'react-redux'
-import { actualizarUsuarioAccion } from '../redux/usuarioDucks'
+import { actualizarUsuarioAccion, editarFotoAccion } from '../redux/usuarioDucks'
 
 const Perfil = () => {
 
@@ -21,6 +21,21 @@ const Perfil = () => {
     dispatch(actualizarUsuarioAccion(nombreUsuario))//mandamos el nuevo nombre
     setActivarFormulario(false)//desaparecemos el formulario
     }
+    const [error, setError] = useState(false)
+    const seleccionarArchivo = imagen => {
+        console.log(imagen.target.files[0])
+        const imagenCliente = imagen.target.files[0]
+        if(imagenCliente === undefined){
+            console.log('no se selecciono imagen')
+            return
+        }
+        if(imagenCliente.type ==="image/png" || imagenCliente.type ==="image/jpg"){
+            dispatch(editarFotoAccion(imagenCliente))
+            setError(false)
+        }else{
+            setError(true)
+        }
+    }
     return (
         <div className=",t-5 text-center">
             <div className="card">
@@ -29,6 +44,29 @@ const Perfil = () => {
                     <h5 className="card-title">Nombre:{usuario.displayName}</h5>
                     <p className="card-text">Email:{usuario.email}</p>
                     <button className="btn btn-dark" onClick={()=>setActivarFormulario(true)}>Editar Nombre</button>
+                    {
+                        error && 
+                        <div className="alert alert-warning mt-3">
+                            Solo archivos .png o .jpg
+                        </div>
+                    }
+                    <div className="custom-file">
+                    <input 
+        type="file" 
+        className="custom-file-input" 
+        id="validatedCustomFile" 
+        onChange={e=>seleccionarArchivo(e)}
+        disabled={loading}
+       
+        style={{display:'none'}}
+        />
+    <label 
+        className={loading ? "btn btn-dark disabled mt-3" : "btn btn-dark mt-3"}
+        htmlFor="validatedCustomFile"
+        >
+            Editar foto perfil
+    </label>
+                    </div>
                 </div>
                 {
                     loading &&
