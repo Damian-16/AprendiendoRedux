@@ -1,15 +1,25 @@
 import React, { useState } from 'react'
-import {useSelector} from 'react-redux'
+import {useSelector,useDispatch} from 'react-redux'
+import { actualizarUsuarioAccion } from '../redux/usuarioDucks'
 
 const Perfil = () => {
 
     const usuario = useSelector(store => store.usuario.user)
+    const loading = useSelector(store => store.usuario.loading)
     console.log(usuario)
     const [nombreUsuario, setNombreUsuario] = useState(usuario.displayName)
     const [activarFormulario, setActivarFormulario] = useState(false)
 
-    const actualizarUsuario = () =>{
 
+    const dispatch = useDispatch()
+    const actualizarUsuario = () =>{
+      if(!nombreUsuario.trim()){
+          console.log("nombre vacio")
+          return
+      }//leemos que haya algo
+
+    dispatch(actualizarUsuarioAccion(nombreUsuario))//mandamos el nuevo nombre
+    setActivarFormulario(false)//desaparecemos el formulario
     }
     return (
         <div className=",t-5 text-center">
@@ -20,6 +30,16 @@ const Perfil = () => {
                     <p className="card-text">Email:{usuario.email}</p>
                     <button className="btn btn-dark" onClick={()=>setActivarFormulario(true)}>Editar Nombre</button>
                 </div>
+                {
+                    loading &&
+                    <div className="card-body">
+                        <div className="d-flex justify-content-center my-2">
+                            <div className="spinner-border" role="status">
+                                {/* <span className="sr-only">Loading...</span> */}
+                            </div>
+                        </div>
+                    </div>
+                }
                 {activarFormulario &&(
                 <div className="card-body">
                     <div className="row justify-content-center">
