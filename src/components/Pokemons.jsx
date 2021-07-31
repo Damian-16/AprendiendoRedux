@@ -49,7 +49,7 @@ const Pokemons = () => {
                   <li key={item.name} className="list-group-item text-uppercase" >
                       {item.name}
                       <button
-                       className="btn btn-dark btn-sm float-right"
+                       className="btn btn-dark btn-sm float-end"
                        onClick={()=>dispatch(unPokeDetalleAccion(item.url))}>Info</button>
                       </li>
               ))
