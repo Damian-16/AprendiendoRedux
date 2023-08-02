@@ -25,6 +25,7 @@ import {withRouter} from 'react-router-dom'
            className="btn btn-dark"
            onClick={()=> dispatch(ingresoUsuarioAccion())}
            disabled={loading}>Acceder</button>  
+        <div style={{background:"red",width:"100%",height:"600"}} className="container"></div>
         </div>
     )
 }

@@ -91,7 +91,7 @@ export const obtenerPokemonsAccion = () => async (dispatch,getState)=>{
     }
     try {
         console.log('datos que vienen desde la api')// esto se presentara la primera vez q se llama ala api que quedara guardado en el localstorage
-       const res = await axios.get(`https://pokeapi.co/api/v2/pokemon?offset=0&limit=20`)
+       const res = await axios.get(`https://pokeapi.co/api/v2/pokemon?offset=0&limit=10`)
        dispatch({
            type:OBTENER_POKEMONS_EXITO,
            payload:res.data  //esto lo envia 
